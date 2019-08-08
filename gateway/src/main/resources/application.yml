@@ -1,0 +1,24 @@
+server:
+  port: 8081
+spring:
+  profiles:
+    active: after_route
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: after_route
+          uri: http://httpbin.org:80/get
+          predicates:
+            - After=2019-06-17T19:17:47.789+10:00[Australia/Sydney]
+        - id: header_route
+          uri: http://httpbin.org:80/get
+          predicates:
+            - Header=X-Request-Id, \d+
+        - id: method_route
+          uri: http://httpbin.org:80/get
+          predicates:
+            - Method=GET
+  profiles: after_route
